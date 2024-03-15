@@ -1,5 +1,6 @@
 package com.example.wardrobe.repository;
 
+import com.example.wardrobe.model.Image;
 import com.example.wardrobe.model.Item;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -16,9 +17,9 @@ public interface ItemRepository extends MongoRepository<Item, String> {
     List<Item> findAllInCategory(String category);
 
     @Query("{'id' : ?0}")
-    @Update("{'$set': {'item': ?1}}")
-    Integer updateItem(String id, Item item);
+    @Update("{ $set: { 'images': ?1} }")
+    Integer updateItem(String id, List<Image> images);
 
-    public long count();
+    long count();
 
 }

@@ -34,7 +34,7 @@ public class ItemController {
     @PostMapping("/items/createItem")
     public ResponseEntity<String> createItem(@RequestParam("title") String title, @RequestParam("brand") String brand,
                                              @RequestParam("size") String size,
-                                             @RequestParam("category") String category, List<MultipartFile> images)
+                                             @RequestParam("category") String category, @RequestParam("images") List<MultipartFile> images)
             throws IOException {
         try {
             String itemId = itemService.createItem(title, size, brand, category);
@@ -52,7 +52,8 @@ public class ItemController {
 
             return ResponseEntity.ok().body(itemId);
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("An error occurred during the creation of the item: " + e.getMessage());
+            // delete the item?
+            return ResponseEntity.internalServerError().body("An error occurred during the creation of the item: " + e);
         }
     }
 

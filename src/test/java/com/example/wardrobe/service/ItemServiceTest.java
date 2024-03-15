@@ -10,6 +10,7 @@ import org.bson.types.Binary;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ItemServiceTest {
@@ -69,14 +70,14 @@ public class ItemServiceTest {
         Item item = new Item(title);
         item.setId(id);
 
-        when(itemRepo.updateItem(eq(id), any(Item.class))).thenReturn(1);
+        when(itemRepo.updateItem(eq(id), eq(List.of(image)))).thenReturn(1);
 
         Item updatedItem = itemService.addImageToItem(image, item);
 
         assertNotNull(updatedItem.getImages());
         assertEquals(image, updatedItem.getImages().get(0));
 
-        verify(itemRepo).updateItem(eq(id), eq(item));
+        verify(itemRepo).updateItem(eq(id), eq(List.of(image)));
     }
 
     @Test

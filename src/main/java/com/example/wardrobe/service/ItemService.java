@@ -42,9 +42,8 @@ public class ItemService {
         try {
             List<Image> images = item.getImages();
             images.add(image);
-            item.setImages(images);
 
-            Integer updateCount = itemRepo.updateItem(item.getId(), item);
+            Integer updateCount = itemRepo.updateItem(item.getId(), images);
             if (updateCount == null || updateCount == 0) {
                 throw new IllegalStateException("Failed to update the item with the new image.");
             }
