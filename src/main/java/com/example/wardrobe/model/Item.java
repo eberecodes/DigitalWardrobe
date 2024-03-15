@@ -3,6 +3,7 @@ package com.example.wardrobe.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Document("items")
@@ -25,6 +26,7 @@ public class Item {
     public Item(String title) {
         super();
         this.title = title;
+        this.images = new ArrayList<>();
     }
 
     public String getCategory() {

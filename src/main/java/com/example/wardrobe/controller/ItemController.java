@@ -6,7 +6,6 @@ import com.example.wardrobe.service.ImageService;
 import com.example.wardrobe.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,16 +36,24 @@ public class ItemController {
                                              @RequestParam("size") String size,
                                              @RequestParam("category") String category, List<MultipartFile> images)
             throws IOException {
-        String id = itemService.createItem(title, size, brand, category);
-        for (MultipartFile file : images) {
-            String imageId = imageService.addImage(title, file);
-            Image image = imageService.getImage(imageId);
-            Item item = itemService.getItem(id);
-            if (!(itemService.addImageToItem(image, item))){
-                return ResponseEntity.internalServerError().body("Issue adding image");
+        try {
+            String itemId = itemService.createItem(title, size, brand, category);
+            Item item = itemService.getItem(itemId);
+
+            for (MultipartFile file : images) {
+                String imageId = imageService.addImage(title, file);
+                Image image = imageService.getImage(imageId);
+
+                item = itemService.addImageToItem(image, item);
+                if (item == null) {
+                    return ResponseEntity.internalServerError().body("There was an issue adding the image to the item.");
+                }
             }
+
+            return ResponseEntity.ok().body(itemId);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("An error occurred during the creation of the item: " + e.getMessage());
         }
-        return ResponseEntity.ok(id);
     }
 
     @GetMapping("/items/getItem")

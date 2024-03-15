@@ -2,24 +2,28 @@ package com.example.wardrobe.service;
 
 import com.example.wardrobe.model.Image;
 import com.example.wardrobe.model.Item;
-import com.example.wardrobe.repository.ImageRepository;
 import com.example.wardrobe.repository.ItemRepository;
-import org.bson.BsonBinarySubType;
-import org.bson.types.Binary;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 @Service
 public class ItemService {
     @Autowired
-    private ItemRepository itemRepo;
+    private final ItemRepository itemRepo;
+
+    public ItemService(ItemRepository itemRepo) {
+        this.itemRepo = itemRepo;
+    }
 
     public String createItem(String title, String size, String brand, String category) {
+        if (itemRepo.findItemByTitle(title) != null) {
+            throw new IllegalArgumentException("An item with the same title already exists");
+        }
+
         Item item = new Item(title);
         item.setId(UUID.randomUUID().toString());
         item.setCategory(category);
@@ -30,24 +34,27 @@ public class ItemService {
         return item.getId();
     }
 
-    public boolean addImageToItem(Image image, Item item) {
+    public Item addImageToItem(Image image, Item item) throws IllegalArgumentException, IllegalStateException {
         if (item == null || image == null) {
-            return false;
+            throw new IllegalArgumentException("Item or image cannot be null.");
         }
 
         try {
-            String id = item.getId();
             List<Image> images = item.getImages();
             images.add(image);
             item.setImages(images);
-            itemRepo.updateItem(id, item);
 
-            return true;
+            Integer updateCount = itemRepo.updateItem(item.getId(), item);
+            if (updateCount == null || updateCount == 0) {
+                throw new IllegalStateException("Failed to update the item with the new image.");
+            }
+
+            return item;
         } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            throw new IllegalStateException("Failed to add the image to item: " + e.getMessage());
         }
     }
+
     public Item getItemByTitle(String title) {
         return itemRepo.findItemByTitle(title);
     }
