@@ -1,0 +1,19 @@
+.navbar-nav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-gap: 10px; /* Adjust as needed */
+}
+.navbar {
+  background-color: orange;
+}
+
+.navbar .nav-link {
+  color: white;
+  font-size: 25px;
+  text-decoration: none !important;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
