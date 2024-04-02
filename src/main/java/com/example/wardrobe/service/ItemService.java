@@ -20,7 +20,7 @@ public class ItemService {
     }
 
     public String createItem(String title, String size, String brand, String category) {
-        if (itemRepo.findItemByTitle(title) != null) {
+        if (this.itemRepo.findItemByTitle(title) != null) {
             throw new IllegalArgumentException("An item with the same title already exists");
         }
 
@@ -29,7 +29,7 @@ public class ItemService {
         item.setCategory(category);
         item.setSize(size);
         item.setBrand(brand);
-        item = itemRepo.insert(item);
+        item = this.itemRepo.insert(item);
 
         return item.getId();
     }
@@ -43,7 +43,7 @@ public class ItemService {
             List<Image> images = item.getImages();
             images.add(image);
 
-            Integer updateCount = itemRepo.updateItem(item.getId(), images);
+            Integer updateCount = this.itemRepo.updateItem(item.getId(), images);
             if (updateCount == null || updateCount == 0) {
                 throw new IllegalStateException("Failed to update the item with the new image.");
             }
@@ -55,18 +55,22 @@ public class ItemService {
     }
 
     public Item getItemByTitle(String title) {
-        return itemRepo.findItemByTitle(title);
+        return this.itemRepo.findItemByTitle(title);
     }
 
     public Item getItem(String id) {
-        return itemRepo.findById(id).get();
+        return this.itemRepo.findById(id).get();
     }
 
     public List<Item> getItemsFromCategory(String category){
-        return itemRepo.findAllInCategory(category);
+        return this.itemRepo.findAllInCategory(category);
     }
 
     public List<Item> fetchAllItems(){
         return this.itemRepo.findAll();
+    }
+
+    public void delete(Item item) {
+        this.itemRepo.delete(item);
     }
 }

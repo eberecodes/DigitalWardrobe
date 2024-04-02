@@ -79,6 +79,17 @@ public class ItemController {
         }
     }
 
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity<String> deleteItem(@PathVariable String id) {
+        Item itemToDelete = itemService.getItem(id);
+        if (itemToDelete != null){
+            itemService.delete(itemToDelete);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
 }
