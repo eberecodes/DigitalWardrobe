@@ -2,12 +2,15 @@ import React from "react";
 import './App.css';
 import Navigation from './components/Navigation';
 import Routes from './Routes';
+import { ImageProvider } from './ImageContext';
 
 function App() {
   return (
     <div className="App">
-      <Navigation />
-      <Routes />
+      <ImageProvider>
+        <Navigation />
+        <Routes />
+      </ImageProvider>
     </div>
   );
 }
