@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 
 const API_URL = 'http://localhost:8080/api/v1/item/items/all';
 
-const ImageContext = createContext({ loading: true, imageData: [] });
+const ImageContext = createContext({ loading: true, imageData: [], setImageData: () => {} });
 
 const ImageProvider = ({ children }) => {
   const [imageData, setImageData] = useState([]);
@@ -15,7 +15,6 @@ const ImageProvider = ({ children }) => {
       });
       if (response.ok) {
         const items = await response.json();
-        // Map items to images
         const images = items.map(item => ({
           id: item.id,
           imageUrl: `data:image/jpeg;base64,${item.images[0].image.data}`
@@ -36,7 +35,7 @@ const ImageProvider = ({ children }) => {
   }, []);
 
   return (
-    <ImageContext.Provider value={{ loading, imageData }}>
+    <ImageContext.Provider value={{ loading, imageData, setImageData }}>
       {children}
     </ImageContext.Provider>
   );

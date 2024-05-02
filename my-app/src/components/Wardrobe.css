@@ -21,3 +21,32 @@
 .wardrobe_item:hover {
   transform: scale(1.05);
 }
+
+.modal {
+    display: flex; /* Change display to flex */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    animation-name: modalopen;
+    animation-duration: 0.4s;
+}
+
+/* Modal animation */
+@keyframes modalopen {
+    from {opacity: 0}
+    to {opacity: 1}
+}
