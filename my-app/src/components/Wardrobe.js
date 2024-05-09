@@ -3,7 +3,7 @@ import './Wardrobe.css';
 import { ImageContext } from './../ImageContext';
 
 export const Wardrobe = () => {
-    const { imageData, setImageData, loading } = useContext(ImageContext);
+    const { imageData, setImageData } = useContext(ImageContext);
     const [selectedItem, setSelectedItem] = useState(null);
     const [showModal, setShowModal] = useState(false);
 

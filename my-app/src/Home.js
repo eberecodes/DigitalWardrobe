@@ -17,11 +17,6 @@ export default function Home() {
           <ImageCarousel images={imageData} />
         )}
       </main>
-      <form>
-        <Button variant="success" type="button" onClick={() => history.push('/AddItem')}>
-          Add New Item
-        </Button>
-      </form>
     </div>
   );
 }

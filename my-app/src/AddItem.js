@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import ProductDetail from './ProductDetail';
 
 const AddItem = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -6,6 +7,7 @@ const AddItem = () => {
   const [brand, setBrand] = useState('');
   const [size, setSize] = useState('');
   const [category, setCategory] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
 
   const handleFileSelect = (event) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -16,31 +18,9 @@ const AddItem = () => {
     }
   };
 
-  const uploadImage = async () => {
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("brand", brand);
-    formData.append("size", size);
-    formData.append("category", category);
-    selectedFiles.forEach((file, index) => {
-          formData.append(`images`, file);
-    });
-
-    try {
-        const response = await fetch(`http://localhost:8080/api/v1/item/items/createItem`, {
-            method: "POST",
-            body: formData
-        });
-
-        if (response.ok) {
-            console.log("Item creation successful");
-        } else {
-            console.error("Failed to create item, response status: ", response.status);
-        }
-    } catch (error) {
-        console.error("Error occurred: ", error);
-    }
-    };
+  const handlePreview = () => {
+      setShowPreview(true);
+  };
 
   const retrieveItem= async (title) => {
   try{
@@ -50,7 +30,7 @@ const AddItem = () => {
     if (response.ok) {
         const item = await response.json();
         console.log("Item retrieved successfully:", item);
-        // do something with retrieved item
+        // do something with retrieved item, use this for interim search capabilities, use product details
     } else {
         console.error("Failed to retrieve item:", response.statusText);
     }
@@ -79,8 +59,17 @@ const AddItem = () => {
       <label>Category:
       <input type="text" onChange={(e) => setCategory(e.target.value)} /></label>
       <input type="file" accept="image/*" onChange={handleFileSelect} multiple />
-      <button onClick={uploadImage}>Upload</button>
+      <button onClick={handlePreview}>Preview</button>
       <button onClick={handleRetrieve}>Retrieve</button>
+
+      {showPreview && (
+              <ProductDetail
+                selectedFiles={selectedFiles}
+                title={title}
+                brand={brand}
+                category={category}
+              />
+            )}
     </div>
   );
 };
