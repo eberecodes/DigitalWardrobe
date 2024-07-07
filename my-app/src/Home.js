@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { Button } from 'react-bootstrap';
 import history from './history';
 import ImageCarousel from './components/ImageCarousel';
 import { ImageContext } from './ImageContext';

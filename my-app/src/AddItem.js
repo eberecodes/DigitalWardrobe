@@ -68,6 +68,7 @@ const AddItem = () => {
                 title={title}
                 brand={brand}
                 category={category}
+                size={size}
               />
             )}
     </div>
